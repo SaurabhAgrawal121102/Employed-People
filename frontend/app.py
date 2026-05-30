@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 # LOAD ENV
 # =========================
 load_dotenv()
-API_URL = os.getenv("API_URL")
+API_URL = st.secrets("API_URL")
 
 # Safety check
 if not API_URL:
@@ -46,7 +46,6 @@ year = st.sidebar.number_input("Year", 2000, 2100, 2024)
 # =========================
 if st.button("🚀 Predict"):
 
-    # 1. CREATE PAYLOAD FIRST
     payload = {
         "region": region,
         "unemployment_rate": unemployment_rate,
@@ -57,25 +56,24 @@ if st.button("🚀 Predict"):
         "year": year
     }
 
-    # 2. BUILD URL
-    url = f"{API_URL}/predict"
-
     try:
-        # 3. SEND REQUEST
+        url = f"{API_URL}/predict"
+
+        st.write("API URL:", url)
+
         response = requests.post(url, json=payload)
 
-       
+        st.write("Status Code:", response.status_code)
+        st.write("Response:", response.text)
 
-        # 4. HANDLE RESPONSE
         if response.status_code == 200:
-            data = response.json()
-            result = float(data["prediction"])
+            result = response.json()
 
-            
-            st.metric("Employed People", f"{result:.2f}")
+            st.success("✅ Prediction Successful")
+            st.json(result)
 
         else:
-            st.error("❌ API Error")
+            st.error(f"❌ API Error ({response.status_code})")
 
     except Exception as e:
         st.error(f"❌ Connection Error: {e}")
