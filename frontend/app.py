@@ -7,8 +7,7 @@ from dotenv import load_dotenv
 # LOAD ENV
 # =========================
 load_dotenv()
-API_URL = st.secrets("API_URL")
-
+API_URL = st.secrets.get("API_URL")
 # Safety check
 if not API_URL:
     st.error("❌ API_URL not found in .env file")
