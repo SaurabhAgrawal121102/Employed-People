@@ -1,0 +1,20 @@
+# Project root
+PROJECT_ROOT=project_root
+
+# Dataset name
+DATASET_NAME=dataset
+
+# Output directory
+MODEL_DIR=model_dir
+LOG_DIR=logs_dir
+
+# Model filename
+MODEL_FILENAME=model_file_name
+LOG_NAME=app.log
+
+# Training Config.
+TARGET_COLUMN=target_column
+TEST_SIZE=0.2
+RANDOM_STATE=42
+
+API_URL=api_endpoint_url
