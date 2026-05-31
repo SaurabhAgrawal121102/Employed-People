@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 # LOAD ENV
 # =========================
 load_dotenv()
-API_URL = st.secrets.get("API_URL")
+API_URL = os.getenv("API_URL")
 # Safety check
 if not API_URL:
     st.error("❌ API_URL not found in .env file")
@@ -58,18 +58,33 @@ if st.button("🚀 Predict"):
     try:
         url = f"{API_URL}/predict"
 
-        st.write("API URL:", url)
-
+       
         response = requests.post(url, json=payload)
 
-        st.write("Status Code:", response.status_code)
-        st.write("Response:", response.text)
+       
 
         if response.status_code == 200:
             result = response.json()
 
             st.success("✅ Prediction Successful")
-            st.json(result)
+
+            value = result.get("prediction")  # change key if needed
+
+            import datetime
+            input_date = datetime.date(year, month, day)
+            today = datetime.date.today()
+
+            if input_date < today:
+                text = "were employed"
+            elif input_date > today:
+                text = "will be employed"
+            else:
+                text = "are employed"
+
+            st.markdown(f"""
+                ## 📊 Result
+                ### {value:,} people {text}
+                """)
 
         else:
             st.error(f"❌ API Error ({response.status_code})")
