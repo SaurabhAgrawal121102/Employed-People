@@ -15,6 +15,11 @@ MODEL_DIR = os.getenv("MODEL_DIR")
 MODEL_FILENAME = os.getenv("MODEL_FILENAME")
 
 MODEL_PATH = os.path.join(MODEL_DIR, MODEL_FILENAME)
+print(f"Loading model from: {MODEL_PATH}")
+
+if not os.path.exists(MODEL_PATH):
+    raise FileNotFoundError(f"Model not found: {MODEL_PATH}")
+
 model = joblib.load(MODEL_PATH)
 
 # =========================
